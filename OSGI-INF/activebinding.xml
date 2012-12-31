@@ -40,6 +40,7 @@
    <property name="service.pid" type="String" value="org.openhab.x10"/>
    
    <reference bind="setEventPublisher" cardinality="1..1" interface="org.openhab.core.events.EventPublisher" name="EventPublisher" policy="dynamic" unbind="unsetEventPublisher"/>
+   <reference bind="setItemRegistry" cardinality="1..1" interface="org.openhab.core.items.ItemRegistry" name="ItemRegistry" policy="dynamic" unbind="unsetItemRegistry"/>
    <reference bind="addBindingProvider" cardinality="1..n" interface="org.openhab.binding.x10.X10BindingProvider" name="X10BindingProvider" policy="dynamic" unbind="removeBindingProvider"/>
    <reference bind="setController" cardinalitiy="1..1" interface="x10.Controller" name="Controller" policy="dynamic" unbind="unsetController" />
 

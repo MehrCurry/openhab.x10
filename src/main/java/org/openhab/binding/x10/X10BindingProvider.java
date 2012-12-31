@@ -28,7 +28,9 @@
  */
 package org.openhab.binding.x10;
 
+import org.openhab.binding.x10.internal.X10Command;
 import org.openhab.core.binding.BindingProvider;
+import org.openhab.core.items.Item;
 import org.openhab.core.types.Command;
 
 /**
@@ -37,7 +39,13 @@ import org.openhab.core.types.Command;
  */
 public interface X10BindingProvider extends BindingProvider {
 
-	boolean supports(String itemName, Command command);
+	public abstract boolean supports(String itemName,Command command);
+
+	public abstract Command getOHCommand(String unitName,X10Command command);
+
+	boolean supports(String unitName, X10Command x10Commmand);
 
 	public abstract x10.Command getX10Command(String itemName, Command command);
+
+	public abstract Item getItem(String unit, X10Command x10Commmand);
 }

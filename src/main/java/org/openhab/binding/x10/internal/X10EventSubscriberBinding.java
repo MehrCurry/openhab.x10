@@ -28,10 +28,14 @@
  */
 package org.openhab.binding.x10.internal;
 
+import java.util.Dictionary;
+
 import org.openhab.binding.x10.X10BindingProvider;
 import org.openhab.core.events.AbstractEventSubscriberBinding;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.State;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +49,7 @@ import x10.Controller;
  */
 public class X10EventSubscriberBinding extends
 		AbstractEventSubscriberBinding<X10BindingProvider> implements
-		HasControllerReference {
+		HasControllerReference, ManagedService {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(X10EventSubscriberBinding.class);
@@ -123,5 +127,12 @@ public class X10EventSubscriberBinding extends
 	@Override
 	public synchronized void unsetController(Controller controller) {
 		this.controller = null;
+	}
+
+	@Override
+	public void updated(Dictionary<String, ?> arg0)
+			throws ConfigurationException {
+		// TODO Auto-generated method stub
+		
 	}
 }

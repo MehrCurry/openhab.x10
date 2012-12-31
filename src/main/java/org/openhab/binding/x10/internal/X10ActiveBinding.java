@@ -34,6 +34,13 @@ import org.openhab.binding.x10.X10BindingProvider;
 
 import org.apache.commons.lang.StringUtils;
 import org.openhab.core.binding.AbstractActiveBinding;
+import org.openhab.core.items.Item;
+import org.openhab.core.items.ItemNotFoundException;
+import org.openhab.core.items.ItemRegistry;
+import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.types.Command;
+import org.openhab.core.types.State;
+import org.openhab.core.types.TypeParser;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.slf4j.Logger;
@@ -64,9 +71,19 @@ public class X10ActiveBinding extends AbstractActiveBinding<X10BindingProvider>
 	 */
 	private long refreshInterval = 60000;
 
-	private Controller controller;
+	private Controller controller=null;
+
+	private ItemRegistry itemRegistry;
 
 	public X10ActiveBinding() {
+	}
+
+	public void setItemRegistry(ItemRegistry itemRegistry) {
+		this.itemRegistry = itemRegistry;
+	}
+	
+	public void unsetItemRegistry(ItemRegistry itemRegistry) {
+		this.itemRegistry = null;
 	}
 
 	public void activate() {
@@ -132,7 +149,15 @@ public class X10ActiveBinding extends AbstractActiveBinding<X10BindingProvider>
 
 	private void processEvent(UnitEvent event) {
 		logger.debug("Event occurred: " + event);
-
+		String unit = "" + event.getCommand().getHouseCode() + event.getCommand().getUnitCode();
+		for (X10BindingProvider provider:providers) {
+			X10Command x10Commmand = X10Command.fromFunction(event.getCommand().getFunctionByte());
+			if (provider.supports(unit,x10Commmand)) {
+				Item item=provider.getItem(unit,x10Commmand);
+				Command command=provider.getOHCommand(unit, x10Commmand);
+				eventPublisher.postUpdate(item.getName(), (State) command);
+			}
+		}
 	}
 
 	@Override
@@ -181,4 +206,23 @@ public class X10ActiveBinding extends AbstractActiveBinding<X10BindingProvider>
 		controller.removeUnitListener(this);
 		this.controller = null;
 	}
+	
+	/**
+	 * Returns the {@link Item} for the given <code>itemName</code> or 
+	 * <code>null</code> if there is no or to many corresponding Items
+	 * 
+	 * @param itemName
+	 * 
+	 * @return the {@link Item} for the given <code>itemName</code> or 
+	 * <code>null</code> if there is no or to many corresponding Items
+	 */
+	private Item getItemFromItemName(String itemName) {
+		try {
+			return itemRegistry.getItem(itemName);
+		} catch (ItemNotFoundException e) {
+			logger.error("couldn't find item for itemName '" + itemName + "'");
+		}	
+		return null;
+	}
+
 }
