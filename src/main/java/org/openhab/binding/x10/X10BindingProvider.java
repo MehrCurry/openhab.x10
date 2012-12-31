@@ -34,6 +34,8 @@ import org.openhab.core.items.Item;
 import org.openhab.core.types.Command;
 
 /**
+ * Provides mapping from openHAB commands to X10 commands and vice versa
+ * 
  * @author Guido Zockoll
  * @since 1.2.0
  */

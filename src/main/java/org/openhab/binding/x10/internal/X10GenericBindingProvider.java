@@ -38,8 +38,6 @@ import org.apache.commons.lang.StringUtils;
 import org.openhab.binding.x10.X10BindingProvider;
 import org.openhab.core.binding.BindingConfig;
 import org.openhab.core.items.Item;
-import org.openhab.core.library.items.DimmerItem;
-import org.openhab.core.library.items.SwitchItem;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.TypeParser;
 import org.openhab.model.item.binding.AbstractGenericBindingProvider;
@@ -50,7 +48,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for parsing the binding configuration.
+ * <p>This class can parse information from the generic binding format and 
+ * provides X10 binding information from it. It registers as a 
+ * {@link X10BindingProvider} service as well.</p>
+ * 
+ * <p>Here are some examples for valid binding configuration strings:
+ * <ul>
+ * 	<li><code>{ x10="ON:ON@A4,OFF:OFF@A4" }</code></li>
+ * 	<li><code>{ x10="ON:ON@A1,OFF:OFF@A1,DECREASE:DIM@A1,INCREASE:BRIGHT@A1"}</code></li>
+ * 	<li><code>{ x10="ON:ON@A7,OFF:OFF@A7,DOWN:OFF@A7,UP:ON@A7"}</code></li>
+ * </ul>
  * 
  * @author Guido Zockoll
  * @since 1.2.0

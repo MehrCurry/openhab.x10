@@ -89,13 +89,12 @@ public class X10EventSubscriberBinding extends
 	@Override
 	protected void internalReceiveUpdate(String itemName, State newState) {
 		logger.info("receive update: " + itemName + ":" + newState);
-		// code which reacts on received updates goes here
+		// No further action is taken since all state changes are comming from the X10 controller itself
 	}
 
 	/**
-	 * Find the first matching {@link ExecBindingProvider} according to
-	 * <code>itemName</code> and <code>command</code>. If no direct match is
-	 * found, a second match is issued with wilcard-command '*'.
+	 * Find the first matching {@link X10BindingProvider} according to
+	 * <code>itemName</code> and <code>command</code>.
 	 * 
 	 * @param itemName
 	 * @param command
@@ -119,20 +118,30 @@ public class X10EventSubscriberBinding extends
 		return firstMatchingProvider;
 	}
 
+	/**
+	 * @{inheritDoc
+	 */
 	@Override
 	public synchronized void setController(Controller controller) {
 		this.controller = controller;
 	}
 
+	/**
+	 * @{inheritDoc
+	 */
 	@Override
 	public synchronized void unsetController(Controller controller) {
 		this.controller = null;
 	}
 
+	/**
+	 * @{inheritDoc
+	 */
+
 	@Override
 	public void updated(Dictionary<String, ?> arg0)
 			throws ConfigurationException {
-		// TODO Auto-generated method stub
-		
+		// Currently no configuration needed
+
 	}
 }
